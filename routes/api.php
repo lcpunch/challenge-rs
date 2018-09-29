@@ -14,5 +14,5 @@ use Illuminate\Http\Request;
 */
 
 Route::post('order', 'OrderController@create');
-Route::patch('order/{id}', 'OrderController@update');
-Route::delete('order/{id}', 'OrderController@delete');
+Route::patch('order', 'OrderController@update');
+Route::delete('order', 'OrderController@delete');

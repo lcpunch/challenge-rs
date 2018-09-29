@@ -68,14 +68,14 @@ class OrderController extends Controller
 
     /**
      * @param Request $request
-     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, int $id)
+    public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'restaurant_id' => 'required|integer',
-            'menu_items'    => 'required|array'
+            'menu_items'    => 'required|array',
+            'order_id'      => 'required|integer'
         ]);
 
         if ($validator->fails()) {
@@ -84,7 +84,7 @@ class OrderController extends Controller
 
         $restaurantId = $request->get('restaurant_id');
         $menuItems    = $request->get('menu_items');
-        $orderId      = $id;
+        $orderId      = $request->get('order_id');
 
         if (!Restaurant::find($restaurantId)) {
             return response()->json(
@@ -101,14 +101,17 @@ class OrderController extends Controller
         $this->orderItem->deleteAllItemsByOrderId($orderId);
         $this->orderItem->createItems($menuItems, $orderId);
 
-        //@TODO return the updated order object
         return response()->json([
             "order" => $this->order->find($orderId),
             "orderItems" => $this->orderItem->findItemsByOrder($orderId)
         ]);
     }
 
-    public function delete(Request $request, int $id)
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'restaurant_id' => 'required|integer',
@@ -131,7 +134,6 @@ class OrderController extends Controller
         $this->orderItem->deleteAllItemsByOrderId($orderId);
         $this->order->deleteByOrderId($orderId);
 
-        //@TODO return the updated order object
         return response()->json(["success" => "Your order # is deleted: " . $orderId]);
     }
 
