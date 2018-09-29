@@ -13,6 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('order', 'OrderController@create');
+Route::patch('order/{id}', 'OrderController@update');
+Route::delete('order/{id}', 'OrderController@delete');
