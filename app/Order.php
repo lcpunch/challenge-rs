@@ -37,4 +37,17 @@ class Order extends Model
         Order::where('id', '=', $orderId)
             ->delete();
     }
+
+    /**
+     * @param int $orderId
+     * @param int $restaurantId
+     * @return mixed
+     */
+    public function findOrderByIdAndRestaurant(int $orderId, int $restaurantId)
+    {
+        return Order::where('id', '=', $orderId)
+            ->where('restaurant_id', '=', $restaurantId)
+            ->get();
+    }
+
 }

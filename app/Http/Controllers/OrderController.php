@@ -129,7 +129,13 @@ class OrderController extends Controller
         $restaurantId  = $request->get('restaurant_id');
         $orderId       = $request->get('order_id');
 
-        if (!Restaurant::find($restaurantId)) {
+        if (!$this->order->find($orderId)) {
+            return response()->json(
+                ["error" => "Invalid order: " . $orderId]
+            );
+        }
+
+        if ($this->order->findOrderByIdAndRestaurant($orderId, $restaurantId)->isEmpty()) {
             return response()->json(
                 ["error" => "Invalid restaurant: " . $restaurantId]
             );
