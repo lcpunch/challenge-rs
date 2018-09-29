@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OrderCreateRequest;
 use App\Menu;
 use App\Order;
 use App\OrderItem;
@@ -37,6 +38,7 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(), [
             'restaurant_id' => 'required|integer',
             'menu_items'    => 'required|array',
+            'menu_items.*'  => 'required|integer',
             'user_id'       => 'required|integer'
         ]);
 
@@ -64,6 +66,7 @@ class OrderController extends Controller
         $this->orderItem->createItems($menuItems, $orderResponse->id);
 
         return response()->json(["success" => "Your order # is created: " . $orderResponse->id]);
+
     }
 
     /**
@@ -75,6 +78,7 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(), [
             'restaurant_id' => 'required|integer',
             'menu_items'    => 'required|array',
+            'menu_items.*'  => 'required|integer',
             'order_id'      => 'required|integer'
         ]);
 
